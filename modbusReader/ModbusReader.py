@@ -8,6 +8,10 @@ class ModbusReader:
         print("Initialize Modbus Client")
         self.modbus_client = ModbusClient(host=host, port=port, unit_id=1, auto_open=True)
 
+    def __shutdown__(self):
+        print("Shutdown Modbus Client")
+        self.modbus_client.close()
+
     def read_modbus(self, modbus_config):
         if modbus_config["type"] == ModbusDataType.UINT16:
             register = self.modbus_client.read_holding_registers(modbus_config["address"], 1)
