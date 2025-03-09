@@ -1,4 +1,4 @@
-from ModbusDataType import ModbusDataType
+from modbusReader.ModbusDataType import ModbusDataType
 
 
 def read_modbus(modbus_client, modbus_config):

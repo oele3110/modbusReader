@@ -1,4 +1,4 @@
-from ModbusDataType import ModbusDataType
+from modbusReader.ModbusDataType import ModbusDataType
 
 modbus_wallbox_config = {
     "charge_mode":
