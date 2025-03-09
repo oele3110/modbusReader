@@ -1,37 +1,44 @@
+from pyModbusTCP.client import ModbusClient
+
 from modbusReader.ModbusDataType import ModbusDataType
 
 
-def read_modbus(modbus_client, modbus_config):
-    if modbus_config["type"] == ModbusDataType.UINT16:
-        register = modbus_client.read_holding_registers(modbus_config["address"], 1)
-        result = read_int16(register, signed=False, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
-    elif modbus_config["type"] == ModbusDataType.INT16:
-        register = modbus_client.read_holding_registers(modbus_config["address"], 1)
-        result = read_int16(register, signed=True, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
-    elif modbus_config["type"] == ModbusDataType.UINT32:
-        register = modbus_client.read_holding_registers(modbus_config["address"], 2)
-        result = read_int32(register, signed=False, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
-    elif modbus_config["type"] == ModbusDataType.INT32:
-        register = modbus_client.read_holding_registers(modbus_config["address"], 2)
-        result = read_int32(register, signed=True, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
-    elif modbus_config["type"] == ModbusDataType.UINT64:
-        register = modbus_client.read_holding_registers(modbus_config["address"], 4)
-        result = read_int64(register, signed=False, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
-    elif modbus_config["type"] == ModbusDataType.INT64:
-        register = modbus_client.read_holding_registers(modbus_config["address"], 4)
-        result = read_int64(register, signed=True, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
-    elif modbus_config["type"] == ModbusDataType.STRING8:
-        register = modbus_client.read_holding_registers(modbus_config["address"], 4)
-        result = read_string(register)
-    elif modbus_config["type"] == ModbusDataType.STRING16:
-        register = modbus_client.read_holding_registers(modbus_config["address"], 8)
-        result = read_string(register)
-    elif modbus_config["type"] == ModbusDataType.STRING32:
-        register = modbus_client.read_holding_registers(modbus_config["address"], 16)
-        result = read_string(register)
-    else:
-        result = None
-    return result
+class ModbusReader:
+    def __init__(self, host, port=502):
+        print("Initialize Modbus Client")
+        self.modbus_client = ModbusClient(host=host, port=port, unit_id=1, auto_open=True)
+
+    def read_modbus(self, modbus_config):
+        if modbus_config["type"] == ModbusDataType.UINT16:
+            register = self.modbus_client.read_holding_registers(modbus_config["address"], 1)
+            result = read_int16(register, signed=False, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
+        elif modbus_config["type"] == ModbusDataType.INT16:
+            register = self.modbus_client.read_holding_registers(modbus_config["address"], 1)
+            result = read_int16(register, signed=True, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
+        elif modbus_config["type"] == ModbusDataType.UINT32:
+            register = self.modbus_client.read_holding_registers(modbus_config["address"], 2)
+            result = read_int32(register, signed=False, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
+        elif modbus_config["type"] == ModbusDataType.INT32:
+            register = self.modbus_client.read_holding_registers(modbus_config["address"], 2)
+            result = read_int32(register, signed=True, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
+        elif modbus_config["type"] == ModbusDataType.UINT64:
+            register = self.modbus_client.read_holding_registers(modbus_config["address"], 4)
+            result = read_int64(register, signed=False, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
+        elif modbus_config["type"] == ModbusDataType.INT64:
+            register = self.modbus_client.read_holding_registers(modbus_config["address"], 4)
+            result = read_int64(register, signed=True, factor=modbus_config["resolution"], digits_round=modbus_config["digits_round"])
+        elif modbus_config["type"] == ModbusDataType.STRING8:
+            register = self.modbus_client.read_holding_registers(modbus_config["address"], 4)
+            result = read_string(register)
+        elif modbus_config["type"] == ModbusDataType.STRING16:
+            register = self.modbus_client.read_holding_registers(modbus_config["address"], 8)
+            result = read_string(register)
+        elif modbus_config["type"] == ModbusDataType.STRING32:
+            register = self.modbus_client.read_holding_registers(modbus_config["address"], 16)
+            result = read_string(register)
+        else:
+            result = None
+        return result
 
 
 def read_string(register):
